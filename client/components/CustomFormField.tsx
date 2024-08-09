@@ -1,8 +1,9 @@
 'use client'
 
 import 'react-phone-number-input/style.css'
-import PhoneInput from 'react-phone-number-input'
+import PhoneInput, {type Value} from 'react-phone-number-input'
 import React from 'react'
+
 import {
     FormControl,
     FormDescription,
@@ -66,7 +67,7 @@ const RenderField=({field,props} : {field: any, props: CustomProps})=>{
                         placeholder={placeHolder}
                         international
                         withCountryCallingCode
-                        value={field.value as E164Number | undefined}
+                        value={field.value as Value | undefined}
                         onChange={field.onChange}
                         className="input-phone shad-input border-0"
                     >
