@@ -13,7 +13,7 @@ const fontSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "FlexMD",
+  title: "Clinitia",
   description: "A healthcare appointments app",
 };
 
