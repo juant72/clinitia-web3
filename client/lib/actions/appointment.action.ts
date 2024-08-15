@@ -7,8 +7,9 @@ import {
   DATABASE_ID,
   databases,
   ENDPOINT,
+  messaging,
 } from "../appwrite.config";
-import { parseStringify } from "../utils";
+import { formatDateTime, parseStringify } from "../utils";
 import { Appointment } from "@/types/appwrite.types";
 import { revalidatePath } from "next/cache";
 
@@ -99,6 +100,14 @@ export const updateAppointment = async ({
         }
         // console.log(updateAppointment);
         //TODO: SMS notification
+        const smsMessage=`
+        Greetings from Clinitia.
+        ${type==='schedule' ? `Your appointment has been confirmed for ${formatDateTime(appointment.schedule!).dateTime} with Dr.${appointment.primaryPhysician}`
+        :
+        `We regret to inform you, that you appointment has been cancelled for the following reason: ${appointment.cancellationReason}`}.`;
+
+        await sendSMSNotification(userId,smsMessage);
+
         revalidatePath('/admin');
         return parseStringify(updateAppointment);
 
@@ -106,4 +115,18 @@ export const updateAppointment = async ({
         console.log(error)
     }
 
+}
+
+export const sendSMSNotification=async (userId: string, content:string) =>{
+  try {
+    const message=await messaging.createSms(
+      ID.unique(),
+      content,
+      [],
+      [userId]
+    );
+    return parseStringify(message);
+  } catch (error) {
+    console.log(error)
+  }
 }
